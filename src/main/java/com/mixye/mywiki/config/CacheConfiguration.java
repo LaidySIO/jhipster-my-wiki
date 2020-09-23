@@ -50,6 +50,7 @@ public class CacheConfiguration {
             createCache(cm, com.mixye.mywiki.domain.User.class.getName());
             createCache(cm, com.mixye.mywiki.domain.Authority.class.getName());
             createCache(cm, com.mixye.mywiki.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.mixye.mywiki.domain.Categories.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

@@ -1,0 +1,55 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="categories">
+            <h2><span jhiTranslate="jhipsterMyWikiApp.categories.detail.title">Categories</span> {{ categories.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="jhipsterMyWikiApp.categories.categoryName">Category Name</span></dt>
+                <dd>
+                    <span>{{ categories.categoryName }}</span>
+                </dd>
+                <dt><span jhiTranslate="jhipsterMyWikiApp.categories.description">Description</span></dt>
+                <dd>
+                    <span>{{ categories.description }}</span>
+                </dd>
+                <dt><span jhiTranslate="jhipsterMyWikiApp.categories.categoryImage">Category Image</span></dt>
+                <dd>
+                    <div *ngIf="categories.categoryImage">
+                        <a (click)="openFile(categories.categoryImageContentType, categories.categoryImage)">
+                            <img [src]="'data:' + categories.categoryImageContentType + ';base64,' + categories.categoryImage" style="max-width: 100%;" alt="categories image"/>
+                        </a>
+                        {{ categories.categoryImageContentType }}, {{ byteSize(categories.categoryImage) }}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="jhipsterMyWikiApp.categories.isPublic">Is Public</span></dt>
+                <dd>
+                    <span>{{ categories.isPublic }}</span>
+                </dd>
+                <dt><span jhiTranslate="jhipsterMyWikiApp.categories.user">User</span></dt>
+                <dd>
+                    <span>{{ categories.user }}</span>
+                </dd>
+                <dt><span jhiTranslate="jhipsterMyWikiApp.categories.creationDate">Creation Date</span></dt>
+                <dd>
+                    <span>{{ categories.creationDate }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/categories', categories.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

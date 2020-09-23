@@ -1,0 +1,124 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-categories-heading" jhiTranslate="jhipsterMyWikiApp.categories.home.createOrEditLabel">Create or edit a Categories</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="jhipsterMyWikiApp.categories.categoryName" for="field_categoryName">Category Name</label>
+                    <input type="text" class="form-control" name="categoryName" id="field_categoryName"
+                           formControlName="categoryName"/>
+                    <div *ngIf="editForm.get('categoryName')!.invalid && (editForm.get('categoryName')!.dirty || editForm.get('categoryName')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('categoryName')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('categoryName')?.errors?.minlength" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: 1 }">
+                        This field is required to be at least 1 characters.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('categoryName')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 25 }">
+                        This field cannot be longer than 25 characters.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('categoryName')?.errors?.pattern" jhiTranslate="entity.validation.pattern" [translateValues]="{ pattern: 'Category Name' }">
+                            This field should follow pattern for "Category Name".
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="jhipsterMyWikiApp.categories.description" for="field_description">Description</label>
+                    <input type="text" class="form-control" name="description" id="field_description"
+                           formControlName="description"/>
+                    <div *ngIf="editForm.get('description')!.invalid && (editForm.get('description')!.dirty || editForm.get('description')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('description')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('description')?.errors?.minlength" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: 10 }">
+                        This field is required to be at least 10 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="jhipsterMyWikiApp.categories.categoryImage" for="field_categoryImage">Category Image</label>
+                    <div>
+                        <img [src]="'data:' + editForm.get('categoryImageContentType')!.value + ';base64,' + editForm.get('categoryImage')!.value" style="max-height: 100px;" *ngIf="editForm.get('categoryImage')!.value" alt="categories image"/>
+                        <div *ngIf="editForm.get('categoryImage')!.value" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{ editForm.get('categoryImageContentType')!.value }}, {{ byteSize(editForm.get('categoryImage')!.value) }}</span>
+                            <button type="button" (click)="clearInputImage('categoryImage', 'categoryImageContentType', 'file_categoryImage')" class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon icon="times"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_categoryImage" (change)="setFileData($event, 'categoryImage', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="categoryImage" id="field_categoryImage"
+                           formControlName="categoryImage"/>
+                    <input type="hidden" class="form-control" name="categoryImageContentType" id="field_categoryImageContentType"
+                           formControlName="categoryImageContentType" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="jhipsterMyWikiApp.categories.isPublic" for="field_isPublic">Is Public</label>
+                    <input type="checkbox" class="form-control" name="isPublic" id="field_isPublic"
+                           formControlName="isPublic"/>
+                    <div *ngIf="editForm.get('isPublic')!.invalid && (editForm.get('isPublic')!.dirty || editForm.get('isPublic')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('isPublic')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="jhipsterMyWikiApp.categories.user" for="field_user">User</label>
+                    <input type="text" class="form-control" name="user" id="field_user"
+                           formControlName="user"/>
+                    <div *ngIf="editForm.get('user')!.invalid && (editForm.get('user')!.dirty || editForm.get('user')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('user')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="jhipsterMyWikiApp.categories.creationDate" for="field_creationDate">Creation Date</label>
+                    <div class="input-group">
+                        <input id="field_creationDate" type="text" class="form-control" name="creationDate" ngbDatepicker #creationDateDp="ngbDatepicker" formControlName="creationDate"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="creationDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+                        </span>
+                    </div>
+                    <div *ngIf="editForm.get('creationDate')!.invalid && (editForm.get('creationDate')!.dirty || editForm.get('creationDate')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('creationDate')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
